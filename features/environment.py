@@ -9,6 +9,9 @@ def before_scenario(context, scenario):
         opts = Options()
         opts.add_argument("--headless")
         opts.add_argument("--no-sandbox")
+        chrome_bin = os.getenv("CHROME_BINARY")
+        if chrome_bin:
+            opts.binary_location = chrome_bin
         context.driver = webdriver.Chrome(options=opts)
     else:
         from selenium.webdriver.firefox.options import Options

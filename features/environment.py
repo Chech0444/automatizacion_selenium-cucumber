@@ -1,11 +1,22 @@
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+import os
+
+BROWSER = os.getenv("BROWSER", "firefox").lower()
 
 def before_scenario(context, scenario):
-    opts = Options()
-    opts.add_argument("--headless")
-    opts.add_argument("--no-sandbox")
-    context.driver = webdriver.Firefox(options=opts)
+    if BROWSER == "chrome":
+        from selenium.webdriver.chrome.options import Options
+        from selenium import webdriver
+        opts = Options()
+        opts.add_argument("--headless")
+        opts.add_argument("--no-sandbox")
+        context.driver = webdriver.Chrome(options=opts)
+    else:
+        from selenium.webdriver.firefox.options import Options
+        from selenium import webdriver
+        opts = Options()
+        opts.add_argument("--headless")
+        context.driver = webdriver.Firefox(options=opts)
+
     context.driver.implicitly_wait(5)
 
 def after_scenario(context, scenario):
